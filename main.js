@@ -1,19 +1,19 @@
 let book = './text.txt';
-let cleanedText; // Will hold processed text
-let biGrams = {}; // Bigrams stored as a dictionary {firstWord: {secondWord: count}}
-let triGrams = {}; // Similar structure for trigrams
+let cleanedText;
+let biGrams = {};
+let triGrams = {};
 const amountOfWords = 50;
 
-// Fetch and preprocess the book
+// Fetch the book
 fetch(book)
     .then(resp => {
-      if (!resp.ok) throw new Error('Failed to fetch book'); // Error handling
+      if (!resp.ok) throw new Error('Failed to fetch data'); // Error handling
       return resp.text();
     })
     .then(prepareText)
-    .catch(error => console.error('Error fetching book:', error));
+    .catch(error => console.error('Error fetching data:', error));
 
-// Text preprocessing function
+// Process data to words
 function prepareText(text) {
   const punctuation = /[,”“•#?!$%^&*;:{}=-_`~()]/g;
   const lineBreaks = /(\r\n|\n|\r)/gm;
@@ -69,19 +69,20 @@ function generateSentence(seedText, targetDivId, getNextWordFunc) {
   for (let i = 0; i < amountOfWords; i++) {
     const nextWord = getNextWordFunc(words);
     generatedText += ' ' + nextWord;
-    words.push(nextWord); // Update words for subsequent choices
+    words.push(nextWord);
   }
 
-  const newParagraph = document.createElement('p'); // Create new <p> element
+  // Append to div
+  const newParagraph = document.createElement('p');
   newParagraph.innerText = generatedText;
-  targetDiv.appendChild(newParagraph); // Append <p> to the div
+  targetDiv.appendChild(newParagraph);
 }
 
 function generateNextBiGramWord(words) {
   const lastWord = words.slice(-1)[0];
   const possibleNextWords = biGrams[lastWord] || {};
 
-  // If no matching bigrams, choose a random word to restart
+  // Failsafe if word isn't in data
   if (Object.keys(possibleNextWords).length === 0) {
     return getRandomWord();
   }
@@ -96,14 +97,15 @@ function generateNextBiGramWord(words) {
     }
   }
 
-  return getRandomWord(); // Shouldn't normally hit this, but a failsafe
+  // Failsafe if word isn't in data
+  return getRandomWord();
 }
 
 function generateNextTriGramWord(words) {
   const lastTwoWords = words.slice(-2);
   const possibleNextWords = triGrams[lastTwoWords[0]]?.[lastTwoWords[1]] || {};
 
-  // Similar logic to biGram selection...
+  // Failsafe if word isn't in data
   if (Object.keys(possibleNextWords).length === 0) {
     return getRandomWord();
   }
@@ -118,10 +120,11 @@ function generateNextTriGramWord(words) {
     }
   }
 
+  // Failsafe if word isn't in data
   return getRandomWord();
 }
 
-// Helper function to get a random word from the cleaned text
+// Failsafe if word isn't in data, function
 function getRandomWord() {
   const words = cleanedText.split(' ');
   return words[Math.floor(Math.random() * words.length)];
