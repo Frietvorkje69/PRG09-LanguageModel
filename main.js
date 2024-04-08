@@ -1,4 +1,4 @@
-let book = './text.txt';
+let book = './bible.txt';
 let cleanedText;
 let biGrams = {};
 let triGrams = {};
@@ -7,7 +7,7 @@ const amountOfWords = 50;
 // Fetch the book
 fetch(book)
     .then(resp => {
-      if (!resp.ok) throw new Error('Failed to fetch data'); // Error handling
+      if (!resp.ok) throw new Error('Failed to fetch data');
       return resp.text();
     })
     .then(prepareText)
@@ -126,6 +126,7 @@ function generateNextTriGramWord(words) {
 
 // Failsafe if word isn't in data, function
 function getRandomWord() {
+  console.log('Failsafe triggered')
   const words = cleanedText.split(' ');
   return words[Math.floor(Math.random() * words.length)];
 }
