@@ -16,6 +16,7 @@ fetch(book)
 function prepareText(text) {
   const punctuation = /[,”“•#?!$%^&*;:{}=-_`~()]/g;
   const lineBreaks = /(\r\n|\n|\r)/gm;
+  // potential remove integers ?
 
   cleanedText = text.toLowerCase()
       .replace(punctuation, " ")
