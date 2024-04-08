@@ -25,7 +25,7 @@ function prepareText(text) {
   buildNGrams(cleanedText.split(' '));
 }
 
-// build bigram and trigram data structures
+// build bi- and tri-gram data structures
 // iterates through the words, checks if key already exists.
 // counts how many times the word has been seen after current word
 function buildNGrams(words) {
