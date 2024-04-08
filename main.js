@@ -26,7 +26,8 @@ function prepareText(text) {
 }
 
 // build bigram and trigram data structures
-// iterates through the words, checks if key already exists. Increments how many times the word has been seen after current word
+// iterates through the words, checks if key already exists.
+// counts how many times the word has been seen after current word
 function buildNGrams(words) {
   for (let i = 0; i < words.length - 1; i++) {
     if (!biGrams[words[i]]) biGrams[words[i]] = {};
