@@ -4,7 +4,6 @@ let biGrams = {};
 let triGrams = {};
 const amountOfWords = 50;
 
-// Fetch the book
 fetch(book)
     .then(resp => {
       if (!resp.ok) throw new Error('Failed to fetch data');
@@ -13,7 +12,7 @@ fetch(book)
     .then(prepareText)
     .catch(error => console.error('Error fetching data:', error));
 
-// Process data to words
+// remove unneeded stuff
 function prepareText(text) {
   const punctuation = /[,”“•#?!$%^&*;:{}=-_`~()]/g;
   const lineBreaks = /(\r\n|\n|\r)/gm;
@@ -25,8 +24,8 @@ function prepareText(text) {
   buildNGrams(cleanedText.split(' '));
 }
 
-// Build bigram and trigram data structures
-// Iterates through the words, checks if key already exists. Increments how many times the word has been seen after current word
+// build bigram and trigram data structures
+// iterates through the words, checks if key already exists. Increments how many times the word has been seen after current word
 function buildNGrams(words) {
   for (let i = 0; i < words.length - 1; i++) {
     if (!biGrams[words[i]]) biGrams[words[i]] = {};
@@ -83,7 +82,7 @@ function generateNextBiGramWord(words) {
   const lastWord = words.slice(-1)[0];
   const possibleNextWords = biGrams[lastWord] || {};
 
-  // Failsafe if word isn't in data
+  // failsafe
   if (Object.keys(possibleNextWords).length === 0) {
     return getRandomWord();
   }
@@ -98,7 +97,7 @@ function generateNextBiGramWord(words) {
     }
   }
 
-  // Failsafe if word isn't in data
+  // failsafe
   return getRandomWord();
 }
 
@@ -106,7 +105,7 @@ function generateNextTriGramWord(words) {
   const lastTwoWords = words.slice(-2);
   const possibleNextWords = triGrams[lastTwoWords[0]]?.[lastTwoWords[1]] || {};
 
-  // Failsafe if word isn't in data
+  // failsafe
   if (Object.keys(possibleNextWords).length === 0) {
     return getRandomWord();
   }
@@ -121,12 +120,13 @@ function generateNextTriGramWord(words) {
     }
   }
 
-  // Failsafe if word isn't in data
+  // failsafe
   return getRandomWord();
 }
 
-// Failsafe if word isn't in data, function
+// failsafe
 function getRandomWord() {
+  // show when triggered for mondeling
   console.log('Failsafe triggered')
   const words = cleanedText.split(' ');
   return words[Math.floor(Math.random() * words.length)];
