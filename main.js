@@ -48,7 +48,7 @@ function submitHandler() {
   const inputWords = inputValue.split(' ');
 
   if (inputValue === '') {
-    alert('Input cannot be empty');
+    alert(`Jesus doesn't like empty inputs..`);
     return;
   }
 
